@@ -1,5 +1,8 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL
-const API_KEY = import.meta.env.VITE_API_KEY; 
+// const BASE_URL = import.meta.env.VITE_API_BASE_URL
+// const API_KEY = import.meta.env.VITE_API_KEY; 
+
+const BASE_URL = 'http://api.favorit-parts.ru/hs/hsprice/';
+const API_KEY = '00000000-0000-0000-0000-000000000001';
 
 export const fetchPartsFromApi = async ({ number, brand, analogues }) => {
   const params = new URLSearchParams();
