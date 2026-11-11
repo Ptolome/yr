@@ -1,0 +1,265 @@
+// src/components/PartsTable/PartsTable.module.scss
+.container {
+  margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #334155;
+  }
+}
+
+.backBtn {
+  padding: 10px 20px;
+  background: white;
+  color: #64748B;
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #00AFFF;
+    color: #00AFFF;
+  }
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid #CBD5E1;
+  background: white;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate; // Для работы border-radius у ячеек
+  border-spacing: 0;
+
+  th,
+  td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #F1F5F9;
+  }
+
+  th {
+    background: #F8FAFC;
+    font-weight: 700;
+    color: #64748B;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+
+      &:hover {
+        color: #00AFFF;
+        background: #EFF6FF;
+      }
+    }
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: #F8FAFC;
+  }
+}
+
+.name {
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 4px;
+}
+
+.brand {
+  font-size: 13px;
+  color: #94A3BB;
+}
+
+.price {
+  font-weight: 700;
+  color: #10b981; // Зеленый для цены
+  font-size: 16px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badgeSuccess {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.badgeDanger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.notRefundRow {
+  background-color: #FFFBEB !important; 
+}
+
+.countBadge {
+  background: #EFF6FF;
+  color: #008CCC;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// ... существующие стили
+
+.miniLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  color: #64748B;
+  font-size: 14px;
+  background: #F8FAFC;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.spinnerSmall {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #CBD5E1;
+  border-top-color: #00AFFF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: white;
+  border: 1px dashed #CBD5E1;
+  border-radius: 16px;
+  text-align: center;
+  color: #64748B;
+  margin-top: 20px;
+  animation: fadeIn 0.4s ease;
+
+  p {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #334155;
+
+    strong {
+      color: #00AFFF;
+    }
+  }
+
+  span {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+}
+
+.subTitle {
+  display: block;
+  font-size: 14px;
+  color: #94A3BB;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: white;
+  border: 1px solid #CBD5E1;
+  border-radius: 16px;
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeIn 0.4s ease;
+
+  .emptyIcon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  span {
+    font-size: 14px;
+    color: #94A3BB;
+    max-width: 400px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.analogRow {
+  background-color: #f8fafc; 
+
+  .nameCell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .analogBadge {
+    font-size: 10px;
+    background: #e2e8f0;
+    color: #64748b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+
+.notRefundRow {
+  background-color: #fff8e1 !important; 
+}

@@ -1,0 +1,55 @@
+.container {
+    margin-bottom: 30px;
+    animation: fadeIn 0.4s ease;
+}
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.brandBtn {
+    padding: 10px 20px;
+    background: white;
+    border: 1px solid #CBD5E1;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: #00AFFF;
+        color: #00AFFF;
+        background: rgba(0, 175, 255, 0.05);
+        transform: translateY(-2px);
+    }
+
+    &.active {
+        background: #00AFFF;
+        color: white;
+        border-color: #00AFFF;
+        box-shadow: 0 4px 12px rgba(0, 175, 255, 0.3);
+
+        &:hover {
+            background: #008CCC;
+            transform: none;
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

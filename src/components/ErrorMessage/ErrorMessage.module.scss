@@ -1,0 +1,16 @@
+.error {
+    background: #FEF2F2;
+    color: #991B1B;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #FECACA;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &::before {
+        content: "⚠️";
+        font-size: 18px;
+    }
+}
