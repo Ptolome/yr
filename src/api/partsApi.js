@@ -1,6 +1,5 @@
-// Используем corsproxy.io для обхода Mixed Content (HTTPS -> HTTP) и CORS на GitHub Pages
-const PROXY_URL = 'https://corsproxy.io/?'; 
-const API_BASE = 'http://api.favorit-parts.ru/hs/hsprice/';
+// Работает только локально через Vite Proxy!
+const BASE_URL = '/hs/hsprice/';
 const API_KEY = '00000000-0000-0000-0000-000000000001';
 
 export const fetchPartsFromApi = async ({ number, brand, analogues }) => {
@@ -16,41 +15,23 @@ export const fetchPartsFromApi = async ({ number, brand, analogues }) => {
     params.append('analogues', analogues);
   }
 
-  // Формируем целевой URL
-  const targetUrl = `${API_BASE}?${params.toString()}`;
+  const response = await fetch(`${BASE_URL}?${params.toString()}`);
   
-  // Оборачиваем в прокси. Важно: corsproxy.io требует URL в качестве параметра после знака вопроса
-  const finalUrl = `${PROXY_URL}${encodeURIComponent(targetUrl)}`;
-
-  try {
-    const response = await fetch(finalUrl);
-    
-    if (!response.ok) {
-      throw new Error(`Ошибка сети: ${response.status} ${response.statusText}`);
-    }
-
-    // corsproxy.io возвращает данные напрямую, без обертки .contents
-    const apiData = await response.json();
-
-    // Проверка на ошибки от самого API Favorit Parts
-    if (apiData.error) {
-      throw new Error(apiData.error);
-    }
-
-    // Обработка случая "товар не найден" (массив с одним пустым объектом)
-    if (apiData.goods && Array.isArray(apiData.goods)) {
-        if (apiData.goods.length === 1 && !apiData.goods[0].goodsID) {
-            return [];
-        }
-        return apiData.goods;
-    }
-
-    // Если структура ответа неожиданная (например, пришел не объект с goods)
-    return [];
-
-  } catch (error) {
-    console.error("API Fetch Error:", error);
-    // Пробрасываем ошибку дальше для обработки в Redux
-    throw error;
+  if (!response.ok) {
+    throw new Error('Сбой сети. Попробуйте позже.');
   }
+
+  const data = await response.json();
+
+  // Обработка ошибок API
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  // Обработка пустого ответа (если товар не найден, API возвращает массив с одним пустым объектом)
+  if (data.goods && data.goods.length === 1 && !data.goods[0].goodsID) {
+    return [];
+  }
+
+  return data.goods || [];
 };
