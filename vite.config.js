@@ -7,13 +7,13 @@ const REPO_NAME = '/yr/';
 export default defineConfig({
   plugins: [react()],
    base: `${REPO_NAME}`,
-  server: {
+ server: {
     port: 3000,
     proxy: {
-      '/hs': {
+      '/api': {
         target: 'http://api.favorit-parts.ru',
         changeOrigin: true,
-        secure: false,
+        rewrite: (path) => path.replace(/^\/api\/proxy/, '/hs/hsprice/'),
       },
     },
   },

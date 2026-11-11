@@ -1,10 +1,11 @@
-// Работает только локально через Vite Proxy!
-const BASE_URL = '/hs/hsprice/';
-const API_KEY = '00000000-0000-0000-0000-000000000001';
+// Базовый URL теперь ведет на нашу функцию прокси
+// При локальной разработке Vite сам поймет этот путь, если настроить прокси, 
+// но для Vercel мы будем использовать относительный путь или полный домен после деплоя.
+const BASE_URL = '/api/proxy'; 
 
 export const fetchPartsFromApi = async ({ number, brand, analogues }) => {
   const params = new URLSearchParams();
-  params.append('key', API_KEY);
+  params.append('key', '00000000-0000-0000-0000-000000000001'); 
   params.append('number', encodeURIComponent(number));
   params.append('info', 'on');
   
@@ -15,23 +16,29 @@ export const fetchPartsFromApi = async ({ number, brand, analogues }) => {
     params.append('analogues', analogues);
   }
 
-  const response = await fetch(`${BASE_URL}?${params.toString()}`);
-  
-  if (!response.ok) {
-    throw new Error('Сбой сети. Попробуйте позже.');
+  // Добавляем параметры к URL прокси
+  const url = `${BASE_URL}?${params.toString()}`;
+
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Ошибка сети: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error);
+    }
+
+    if (data.goods && data.goods.length === 1 && !data.goods[0].goodsID) {
+      return [];
+    }
+
+    return data.goods || [];
+  } catch (error) {
+    console.error("API Fetch Error:", error);
+    throw error;
   }
-
-  const data = await response.json();
-
-  // Обработка ошибок API
-  if (data.error) {
-    throw new Error(data.error);
-  }
-
-  // Обработка пустого ответа (если товар не найден, API возвращает массив с одним пустым объектом)
-  if (data.goods && data.goods.length === 1 && !data.goods[0].goodsID) {
-    return [];
-  }
-
-  return data.goods || [];
 };
