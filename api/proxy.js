@@ -1,9 +1,13 @@
 // api/proxy.js
 export default async function handler(req, res) {
-  // Получаем параметры из запроса нашего фронтенда
+  // Разрешаем только GET запросы
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   const { key, number, brand, analogues, info } = req.query;
 
-  // Формируем URL для целевого API
+  // Формируем параметры для целевого API
   const params = new URLSearchParams();
   if (key) params.append('key', key);
   if (number) params.append('number', number);
@@ -14,13 +18,19 @@ export default async function handler(req, res) {
   const targetUrl = `http://api.favorit-parts.ru/hs/hsprice/?${params.toString()}`;
 
   try {
-    // Делаем запрос к API Favorit Parts с нашего сервера (Vercel)
+    // Сервер Vercel делает запрос к HTTP API
     const response = await fetch(targetUrl);
+    
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
+
     const data = await response.json();
     
-    // Возвращаем данные нашему React-приложению
+    // Возвращаем данные клиенту
     res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Ошибка прокси-сервера' });
+    console.error('Proxy error:', error);
+    res.status(500).json({ error: 'Failed to fetch data from parts API' });
   }
 }
