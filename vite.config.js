@@ -6,7 +6,7 @@ const REPO_NAME = '/yr/';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-   base: `/${REPO_NAME}/`,
+   base: `${REPO_NAME}`,
   server: {
     port: 3000,
     proxy: {
